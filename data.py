@@ -1,4 +1,3 @@
-nuno
 # Nutrient minimums.
 nutrients = [
     ['Calories (kcal)', 3],
