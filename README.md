@@ -12,9 +12,14 @@ These are demonstrated by representing your problem well pragmatically, both as 
 representation itself as well as the definition of your fitness function. Keep in mind that the
 simpler the project the more implementations you are expected to do.
 These are some basic steps expected from each project:
-• Implement several selection methods
-• Implement several mutation operators
-• Implement several crossover operators
+
+Implement several selection methods
+
+Implement several mutation operators
+
+Implement several crossover operators
+
+
 Illustrate and compare the performance of different approaches to your problem in your report.
 The report should focus exclusively on your implementation and the results you obtained, hence,
 have no literature review or “Introduction to CIFO/ Genetic Algorithms” part. It should only focus
