@@ -1,5 +1,5 @@
 from charles.charles import Population, Individual
-from cifo_week11_complete.data.data import distance_matrix
+from project_CIFO.data.data import distance_matrix
 from copy import deepcopy
 from charles.crossover import pmx
 from charles.mutation import inversion_mutation

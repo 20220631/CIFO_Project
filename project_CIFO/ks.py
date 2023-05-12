@@ -1,6 +1,6 @@
 from charles.charles import Population, Individual
 from copy import deepcopy
-from cifo_week11_complete.data.data import weights, values, capacity
+from project_CIFO.data.data import weights, values, capacity
 from charles.selection import tournament_sel
 from charles.mutation import binary_mutation
 from charles.crossover import single_point_co
