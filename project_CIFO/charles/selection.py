@@ -56,3 +56,14 @@ def tournament_sel(population, size=4):
         return min(tournament, key=attrgetter("fitness"))
 
 
+import random
+def roulette_wheel_selection(population, costs):
+    total_cost = sum(costs)
+    cumulative_probabilities = [sum(costs[:i + 1]) / total_cost for i in range(len(costs))]
+    roulette_value = random.random()
+    selected_index = 0
+    for i in range(len(cumulative_probabilities)):
+        if roulette_value <= cumulative_probabilities[i]:
+            selected_index = i
+            break
+    return population[selected_index]
