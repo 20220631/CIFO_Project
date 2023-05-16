@@ -55,6 +55,83 @@ def inversion_mutation(individual):
     return individual
 
 
+import random
+
+def uniform_mutation(individual, mutation_rate, min_value, max_value, nutrient_data):
+    # nutrient_data argument is a list of lists containing the calorie and nutrient values for each food item
+    mutated_individual = individual.copy()
+
+    for i in range(len(mutated_individual)):
+        if random.random() < mutation_rate:
+            mutated_individual[i] += random.uniform(min_value, max_value)
+
+            # Ensure that the mutated value is within the allowed range
+            mutated_individual[i] = max(mutated_individual[i], min_value)
+            mutated_individual[i] = min(mutated_individual[i], max_value)
+
+            # Adjust the mutated individual to satisfy nutrient constraints
+            total_calories = sum([mutated_individual[i] * nutrient_data[i][0] for i in range(len(mutated_individual))])
+            total_nutrients = [sum([mutated_individual[i] * nutrient_data[i][j] for i in range(len(mutated_individual))]) for j in range(1, len(nutrient_data[0]))]
+
+            while total_calories > 3000:
+                # Reduce the quantity of high-calorie foods to balance the total calories
+                high_calorie_indices = [i for i in range(len(mutated_individual)) if nutrient_data[i][0] >= 150]
+                if not high_calorie_indices:
+                    break
+                index = random.choice(high_calorie_indices)
+                reduction = min(mutated_individual[index], 1)
+                mutated_individual[index] -= reduction
+                total_calories -= nutrient_data[index][0] * reduction
+
+            while any([nutrient < 0 for nutrient in total_nutrients]):
+                # Increase the quantity of low-nutrient foods to balance the nutrients
+                low_nutrient_indices = [i for i in range(len(mutated_individual)) if nutrient_data[i][1:] == [0, 0, 0, 0, 0]]
+                if not low_nutrient_indices:
+                    break
+                index = random.choice(low_nutrient_indices)
+                increase = min(max_value - mutated_individual[index], 1)
+                mutated_individual[index] += increase
+                total_nutrients = [sum([mutated_individual[i] * nutrient_data[i][j] for i in range(len(mutated_individual))]) for j in range(1, len(nutrient_data[0]))]
+
+    return mutated_individual
+
+
+import random
+
+def random_mutation(individual, mutation_rate, min_value, max_value, nutrient_data):
+    mutated_individual = individual.copy()
+
+    for i in range(len(mutated_individual)):
+        if random.random() < mutation_rate:
+            mutated_individual[i] = random.uniform(min_value, max_value)
+
+            # Adjust the mutated individual to satisfy nutrient constraints
+            total_calories = sum([mutated_individual[i] * nutrient_data[i][0] for i in range(len(mutated_individual))])
+            total_nutrients = [sum([mutated_individual[i] * nutrient_data[i][j] for i in range(len(mutated_individual))]) for j in range(1, len(nutrient_data[0]))]
+
+            while total_calories > 3000:
+                # Reduce the quantity of high-calorie foods to balance the total calories
+                high_calorie_indices = [i for i in range(len(mutated_individual)) if nutrient_data[i][0] >= 150]
+                if not high_calorie_indices:
+                    break
+                index = random.choice(high_calorie_indices)
+                reduction = min(mutated_individual[index], 1)
+                mutated_individual[index] -= reduction
+                total_calories -= nutrient_data[index][0] * reduction
+
+            while any([nutrient < 0 for nutrient in total_nutrients]):
+                # Increase the quantity of low-nutrient foods to balance the nutrients
+                low_nutrient_indices = [i for i in range(len(mutated_individual)) if nutrient_data[i][1:] == [0, 0, 0, 0, 0]]
+                if not low_nutrient_indices:
+                    break
+                index = random.choice(low_nutrient_indices)
+                increase = min(max_value - mutated_individual[index], 1)
+                mutated_individual[index] += increase
+                total_nutrients = [sum([mutated_individual[i] * nutrient_data[i][j] for i in range(len(mutated_individual))]) for j in range(1, len(nutrient_data[0]))]
+
+    return mutated_individual
+
+
 if __name__ == '__main__':
     test = [1, 2, 3, 4, 5, 6]
     test = inversion_mutation(test)
