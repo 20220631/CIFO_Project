@@ -64,7 +64,7 @@ def rank_selection(population):
     # Assign a selection probability to each individual based on its rank
     total_rank = sum(range(1, len(population)+1))
     selection_probs = []
-    for i in range(1, len(population)+1):
+    for r in range(1, len(population)+1):
         selection_probs.append(r/total_rank)
 
     # Select the parents based on their selection probabilities

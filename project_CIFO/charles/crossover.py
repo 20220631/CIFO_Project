@@ -113,40 +113,6 @@ def arithmetic_xo(p1, p2):
         o2[i] = p2[i] * alpha + (1-alpha) * p1[i]
     return o1, o2
 
-import random
-
-def pmx_crossover(parent1, parent2):
-    # Select a random segment of the parents' genomes
-    gene_size = len(parent1)
-    start = random.randint(0, gene_size - 1)
-    end = random.randint(start, gene_size - 1)
-
-    # Initialize the child genomes with the parents' genomes
-    child1 = parent1.copy()
-    child2 = parent2.copy()
-
-    # Perform PMX crossover within the selected segment
-    for i in range(start, end+1):
-        # Find the corresponding gene in the other parent
-        j = parent2.index(parent1[i])
-
-        # Swap the corresponding genes between the parents
-        child1[i], child1[j] = child1[j], child1[i]
-        child2[i], child2[j] = child2[j], child2[i]
-
-        # Resolve the conflicts in the swapped segments
-        while child1.index(child1[i]) != i:
-            k = child1.index(child1[i])
-            child1[k], child1[j] = child1[j], child1[k]
-        while child2.index(child2[i]) != i:
-            k = child2.index(child2[i])
-            child2[k], child2[j] = child2[j], child2[k]
-
-    return child1, child2
-
-
-
-
 
 if __name__ == '__main__':
     #p1, p2 = [9, 8, 4, 5, 6, 7, 1, 3, 2, 10], [8, 7, 1, 2, 3, 10, 9, 5, 4, 6]
