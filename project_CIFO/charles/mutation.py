@@ -57,7 +57,7 @@ def inversion_mutation(individual):
 
 import random
 
-def uniform_mutation(individual, mut_prob, min_value, max_value, nutrient_data):
+def uniform_mutation(individual, mutation_rate, min_value, max_value, nutrient_data):
     # nutrient_data argument is a list of lists containing the calorie and nutrient values for each food item
     mutated_individual = individual.copy()
 
