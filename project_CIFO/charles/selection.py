@@ -57,6 +57,8 @@ def tournament_sel(population, size=4):
 
 
 import random
+
+
 def roulette_wheel_selection(population, costs):
     total_cost = sum(costs)
     cumulative_probabilities = [sum(costs[:i + 1]) / total_cost for i in range(len(costs))]
@@ -67,3 +69,6 @@ def roulette_wheel_selection(population, costs):
             selected_index = i
             break
     return population[selected_index]
+
+
+

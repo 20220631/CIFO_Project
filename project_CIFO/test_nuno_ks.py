@@ -2,7 +2,7 @@ from charles.charles import Population, Individual
 from charles.search import hill_climb, sim_annealing
 from copy import deepcopy
 from data.data import data_, nutrients
-from charles.selection import fps, tournament_sel
+from charles.selection import fps, tournament_sel, roulette_wheel_selection
 from charles.mutation import binary_mutation, swap_mutation
 from charles.crossover import single_point_co
 from random import random, choice
@@ -19,9 +19,9 @@ def get_fitness(self):
 
     for bit in range(len(self.representation)):
         if self.representation[bit] != 0:
-            fitness += self.representation[bit]*data_[bit][2]  # cost of the selected item
+            fitness += self.representation[bit] * data_[bit][2]  # cost of the selected item
             for nutrient_index in range(len(nutrients)):
-                nutrient_totals[nutrient_index] += self.representation[bit]*data_[bit][3 + nutrient_index]
+                nutrient_totals[nutrient_index] += self.representation[bit] * data_[bit][3 + nutrient_index]
 
     # Apply a penalty if nutrient minimums are not met
     penalty = 0
@@ -49,12 +49,12 @@ def get_neighbours(self):
     return n
 
 
-
-
 # Monkey Patching
 Individual.get_fitness = get_fitness
 Individual.get_neighbours = get_neighbours
 
 pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(7), replacement=True)
 
-pop.evolve(gens=100, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=single_point_co, elitism=True)
+pop.evolve(gens=100, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=single_point_co,
+           elitism=True)
+

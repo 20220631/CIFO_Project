@@ -94,7 +94,7 @@ def pmx(p1, p2):
     o1, o2 = pmx_offspring(p1, p2), pmx_offspring(p2, p1)
     return o1, o2
 
-
+#can't be used in our problem, instead i'm using uniform crossover
 def arithmetic_xo(p1, p2):
     """Implementation of arithmetic crossover/geometric crossover with constant alpha.
 
@@ -120,6 +120,31 @@ if __name__ == '__main__':
     o1, o2 = arithmetic_xo(p1, p2)
     print(o1, o2)
 
+
+def uniform_crossover(p1, p2):
+    """Implementation of uniform crossover,
+    randomly selects genes from each parent with a 50% probability for each gene
+
+        Args:
+            p1 (Individual): First parent for crossover.
+            p2 (Individual): Second parent for crossover.
+
+        Returns:
+            Individuals: Two offspring, resulting from the crossover.
+        """
+    offspring1 = []
+    offspring2 = []
+
+    for gene1, gene2 in zip(parent1, parent2):
+        # Randomly choose which parent's gene to inherit
+        if random.random() < 0.5:
+            offspring1.append(gene1)
+            offspring2.append(gene2)
+        else:
+            offspring1.append(gene2)
+            offspring2.append(gene1)
+
+    return offspring1, offspring2
 
 
 
