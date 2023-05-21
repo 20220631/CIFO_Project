@@ -38,6 +38,20 @@ def swap_mutation(individual):
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
     return individual
 
+def creep_mutation(individual):
+    """Nuno
+    Creep mutation for a GA individual. Slightly alters the quantity of a selected food item.
+
+    Args:
+        individual (Individual): A GA individual. In this case, each gene represents a quantity of a particular food item.
+
+    Returns:
+        Individual: The mutated individual. The mutation is performed in-place.
+    """
+    index = randint(0, len(individual) - 1)  # select a random index
+    individual[index] += randint(-1, 1)  # slightly alter its value
+    individual[index] = min(max(0, individual[index]), 7)  # ensure the quantity stays within bounds
+    return individual
 
 def inversion_mutation(individual):
     """Inversion mutation for a GA individual. Reverts a portion of the representation.
@@ -54,8 +68,7 @@ def inversion_mutation(individual):
     individual[mut_indexes[0]:mut_indexes[1]] = individual[mut_indexes[0]:mut_indexes[1]][::-1]
     return individual
 
-
-import random
+import  random
 
 def uniform_mutation(individual, mutation_rate, min_value, max_value, nutrient_data):
     # nutrient_data argument is a list of lists containing the calorie and nutrient values for each food item

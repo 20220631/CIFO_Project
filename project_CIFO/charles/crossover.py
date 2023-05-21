@@ -55,6 +55,29 @@ def cycle_xo(p1, p2):
 
     return offspring1, offspring2
 
+def uniform_co(p1, p2):
+    """Nuno Dias
+    Implementation of uniform crossover.
+
+    Args:
+        p1 (Individual): First parent for crossover.
+        p2 (Individual): Second parent for crossover.
+
+    Returns:
+        Individuals: Two offspring, resulting from the crossover.
+    """
+    offspring1 = []
+    offspring2 = []
+
+    for gene1, gene2 in zip(p1, p2):
+        if randint(0, 1) == 0:
+            offspring1.append(gene1)
+            offspring2.append(gene2)
+        else:
+            offspring1.append(gene2)
+            offspring2.append(gene1)
+
+    return offspring1, offspring2
 
 def pmx(p1, p2):
     """Implementation of partially matched/mapped crossover.
