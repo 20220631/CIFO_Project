@@ -2,6 +2,44 @@ from random import uniform, choice, sample
 from operator import attrgetter
 
 
+def fps_afonso(population):
+    """Fitness proportionate selection implementation.
+
+    Args:
+        population (Population): The population we want to select from.
+
+    Returns:
+        Individual: Selected individual.
+    """
+
+    total_fitness = sum([i.fitness for i in population])
+
+    # Randomly select a spin value between 0 and total_fitness
+    spin = uniform(0, total_fitness)
+    position = 0
+
+    if population.optim == "max":
+        for individual in population:
+            position += individual.fitness
+            if position > spin:
+                return individual
+
+    elif population.optim == "min":
+        # Was here before: raise NotImplementedError
+        # The new changes:
+
+        # Find individual in the position of the spin
+        for individual in population:
+            # Reverse the selection process for minimization
+            # Subtracting individual fitness from total fitness emphasizes smaller fitness values, reducing their contribution to the position.
+            position += total_fitness - individual.fitness
+            if position > spin:
+                return individual
+
+    else:
+        raise Exception("No optimization specified (min or max).")
+
+
 def fps(population):
     """Fitness proportionate selection implementation.
 

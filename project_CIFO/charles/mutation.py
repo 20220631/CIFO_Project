@@ -1,4 +1,5 @@
 from random import randint, sample
+import  random
 
 
 def binary_mutation(individual):
@@ -68,7 +69,6 @@ def inversion_mutation(individual):
     individual[mut_indexes[0]:mut_indexes[1]] = individual[mut_indexes[0]:mut_indexes[1]][::-1]
     return individual
 
-import  random
 
 def uniform_mutation(individual, mutation_rate, min_value, max_value, nutrient_data):
     # nutrient_data argument is a list of lists containing the calorie and nutrient values for each food item
