@@ -18,7 +18,6 @@ def single_point_co(p1, p2):
 
     return offspring1, offspring2
 
-from random import randint, sample
 
 def multi_point_co(p1, p2, num_points=8):
     """Implementation of multi-point crossover.
@@ -56,45 +55,8 @@ def multi_point_co(p1, p2, num_points=8):
     return offspring1, offspring2
 
 
-
-def cycle_xo(p1, p2):
-    """Implementation of cycle crossover.
-
-    Args:
-        p1 (Individual): First parent for crossover.
-        p2 (Individual): Second parent for crossover.
-
-    Returns:
-        Individuals: Two offspring, resulting from the crossover.
-    """
-    # offspring placeholders
-    offspring1 = [None] * len(p1)
-    offspring2 = [None] * len(p1)
-
-    while None in offspring1:
-        index = offspring1.index(None)
-        val1 = p1[index]
-        val2 = p2[index]
-
-        # copy the cycle elements
-        while val1 != val2:
-            offspring1[index] = p1[index]
-            offspring2[index] = p2[index]
-            val2 = p2[index]
-            index = p1.index(val2)
-
-        # copy the rest
-        for element in offspring1:
-            if element is None:
-                index = offspring1.index(None)
-                if offspring1[index] is None:
-                    offspring1[index] = p2[index]
-                    offspring2[index] = p1[index]
-
-    return offspring1, offspring2
-
 def uniform_co(p1, p2):
-    """Nuno Dias
+    """
     Implementation of uniform crossover.
 
     Args:
@@ -157,23 +119,6 @@ def pmx(p1, p2):
     return o1, o2
 
 
-def arithmetic_xo(p1, p2):
-    """Implementation of arithmetic crossover/geometric crossover with constant alpha.
-
-    Args:
-        p1 (Individual): First parent for crossover.
-        p2 (Individual): Second parent for crossover.
-
-    Returns:
-        Individuals: Two offspring, resulting from the crossover.
-    """
-    alpha = uniform(0, 1)
-    o1 = [None] * len(p1)
-    o2 = [None] * len(p1)
-    for i in range(len(p1)):
-        o1[i] = p1[i] * alpha + (1-alpha) * p2[i]
-        o2[i] = p2[i] * alpha + (1-alpha) * p1[i]
-    return o1, o2
 
 
 if __name__ == '__main__':
