@@ -1,4 +1,4 @@
-from random import randint, sample, uniform
+from random import randint, sample, uniform, randint
 
 
 def single_point_co(p1, p2):
@@ -17,6 +17,44 @@ def single_point_co(p1, p2):
     offspring2 = p2[:co_point] + p1[co_point:]
 
     return offspring1, offspring2
+
+from random import randint, sample
+
+def multi_point_co(p1, p2, num_points=8):
+    """Implementation of multi-point crossover.
+
+    Args:
+        p1 (Individual): First parent for crossover.
+        p2 (Individual): Second parent for crossover.
+        num_points (int, optional): Number of crossover points. Defaults to 2.
+
+    Returns:
+        Individuals: Two offspring, resulting from the crossover.
+    """
+    assert num_points < len(p1) - 1, "Number of crossover points must be less than the length of the parent representations."
+
+    # Generate crossover points
+    co_points = sorted(sample(range(1, len(p1) - 1), num_points))
+
+    offspring1, offspring2 = [], []
+    for i in range(len(co_points)):
+        if i % 2 == 0:
+            offspring1.extend(p1[co_points[i-1]:co_points[i]])
+            offspring2.extend(p2[co_points[i-1]:co_points[i]])
+        else:
+            offspring1.extend(p2[co_points[i-1]:co_points[i]])
+            offspring2.extend(p1[co_points[i-1]:co_points[i]])
+
+    # Add the last segment
+    if num_points % 2 == 0:
+        offspring1.extend(p1[co_points[-1]:])
+        offspring2.extend(p2[co_points[-1]:])
+    else:
+        offspring1.extend(p2[co_points[-1]:])
+        offspring2.extend(p1[co_points[-1]:])
+
+    return offspring1, offspring2
+
 
 
 def cycle_xo(p1, p2):

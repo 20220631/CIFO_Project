@@ -4,7 +4,7 @@ from copy import deepcopy
 from data.data import data_, nutrients
 from charles.selection import fps, tournament_sel, roulette_wheel_selection
 from charles.mutation import binary_mutation, swap_mutation, creep_mutation
-from charles.crossover import single_point_co, cycle_xo, uniform_co
+from charles.crossover import single_point_co, cycle_xo, uniform_co, multi_point_co
 from random import random, choice
 from operator import attrgetter
 
@@ -61,7 +61,7 @@ Individual.get_neighbours = get_neighbours
 # List all the combinations of mutation, selection and crossover
 mutation_methods = [swap_mutation, creep_mutation]
 selection_methods = [tournament_sel, roulette_wheel_selection]
-crossover_methods = [single_point_co, uniform_co]
+crossover_methods = [single_point_co, uniform_co, multi_point_co]
 
 # Record the results of each run in a list
 results = []
