@@ -94,29 +94,43 @@ def pmx(p1, p2):
     #xo_points = [3,6]
     xo_points.sort()
 
-    def pmx_offspring(x,y):
-        o = [None] * len(x)
-        # offspring2
-        o[xo_points[0]:xo_points[1]]  = x[xo_points[0]:xo_points[1]]
-        z = set(y[xo_points[0]:xo_points[1]]) - set(x[xo_points[0]:xo_points[1]])
+    def pmx(p1, p2):
+        """Implementation of partially matched/mapped crossover.
 
-        # numbers that exist in the segment
-        for i in z:
-            temp = i
-            index = y.index(x[y.index(temp)])
-            while o[index] is not None:
-                temp = index
-                index = y.index(x[temp])
-            o[index] = i
+        Args:
+            p1 (Individual): First parent for crossover.
+            p2 (Individual): Second parent for crossover.
 
-        # numbers that doesn't exist in the segment
-        while None in o:
-            index = o.index(None)
-            o[index] = y[index]
-        return o
+        Returns:
+            Individuals: Two offspring, resulting from the crossover.
+        """
+        xo_points = sample(range(len(p1)), 2)
+        # xo_points = [3,6]
+        xo_points.sort()
 
-    o1, o2 = pmx_offspring(p1, p2), pmx_offspring(p2, p1)
-    return o1, o2
+        def pmx_offspring(x, y):
+            o = [None] * len(x)
+            # offspring2
+            o[xo_points[0]:xo_points[1]] = x[xo_points[0]:xo_points[1]]
+            z = set(y[xo_points[0]:xo_points[1]]) - set(x[xo_points[0]:xo_points[1]])
+
+            # numbers that exist in the segment
+            for i in z:
+                temp = i
+                index = y.index(x[y.index(temp)])
+                while o[index] is not None:
+                    temp = index
+                    index = y.index(x[temp])
+                o[index] = i
+
+            # numbers that doesn't exist in the segment
+            while None in o:
+                index = o.index(None)
+                o[index] = y[index]
+            return o
+
+        o1, o2 = pmx_offspring(p1, p2), pmx_offspring(p2, p1)
+        return o1, o2
 
 
 
@@ -124,7 +138,7 @@ def pmx(p1, p2):
 if __name__ == '__main__':
     #p1, p2 = [9, 8, 4, 5, 6, 7, 1, 3, 2, 10], [8, 7, 1, 2, 3, 10, 9, 5, 4, 6]
     p1, p2 = [0.1,0.15,0.3],[0.3,0.1,0.2]
-    o1, o2 = arithmetic_xo(p1, p2)
+    o1, o2 = pmx(p1, p2)
     print(o1, o2)
 
 

@@ -3,8 +3,8 @@ from charles.search import hill_climb, sim_annealing
 from copy import deepcopy
 from data.data import data_, nutrients
 from charles.selection import fps, tournament_sel, roulette_wheel_selection
-from charles.mutation import binary_mutation, swap_mutation, creep_mutation
-from charles.crossover import single_point_co, cycle_xo, uniform_co, multi_point_co
+from charles.mutation import swap_mutation, creep_mutation, uniform_mutation
+from charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
 from random import random, choice
 from operator import attrgetter
 
@@ -60,8 +60,8 @@ Individual.get_neighbours = get_neighbours
 
 # List all the combinations of mutation, selection and crossover
 mutation_methods = [swap_mutation, creep_mutation]
-selection_methods = [tournament_sel, roulette_wheel_selection]
-crossover_methods = [single_point_co, uniform_co, multi_point_co]
+selection_methods = [tournament_sel, roulette_wheel_selection, fps]
+crossover_methods = [single_point_co, uniform_co, multi_point_co, pmx]
 
 # Record the results of each run in a list
 results = []

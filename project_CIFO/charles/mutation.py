@@ -1,4 +1,4 @@
-from random import randint, sample
+from random import randint, sample, choice
 import  random
 
 
@@ -70,6 +70,20 @@ def uniform_mutation(individual, mutation_rate, min_value, max_value, nutrient_d
 
     return mutated_individual
 
+
+def random_resetting(individual):
+    """ reserva
+    Random resetting mutation for a GA individual. Randomly resets the quantity of a selected food item.
+
+    Args:
+        individual (Individual): A GA individual. In this case, each gene represents a quantity of a particular food item.
+
+    Returns:
+        Individual: The mutated individual. The mutation is performed in-place.
+    """
+    index = randint(0, len(individual) - 1)  # select a random index
+    individual[index] = choice(range(8))  # reset its value to a random quantity
+    return individual
 
 if __name__ == '__main__':
     test = [1, 2, 3, 4, 5, 6]
