@@ -79,6 +79,7 @@ def uniform_co(p1, p2):
 
     return offspring1, offspring2
 
+
 def pmx(p1, p2):
     """Implementation of partially matched/mapped crossover.
 

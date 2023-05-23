@@ -1,4 +1,4 @@
-from random import uniform, choice, sample
+from random import uniform, choice, sample, choices, random
 from operator import attrgetter
 
 
@@ -108,19 +108,26 @@ def rank_selection(population):
     # Select the parents based on their selection probabilities
     parents = []
     for i in range(2): # so queremos 2 parents
-        selected_index = random.choices(range(len(population)), weights=selection_probs)[0]
+        selected_index = choices(range(len(population)), weights=selection_probs)[0]
         parents.append(population[selected_index])
 
     return parents
 
-import random
-def roulette_wheel_selection(population, costs):
-    total_cost = sum(costs)
-    cumulative_probabilities = [sum(costs[:i + 1]) / total_cost for i in range(len(costs))]
-    roulette_value = random.random()
-    selected_index = 0
-    for i in range(len(cumulative_probabilities)):
-        if roulette_value <= cumulative_probabilities[i]:
-            selected_index = i
-            break
-    return population[selected_index]
+def roulette_wheel_selection(population):
+    total_fitness = sum(individual.fitness for individual in population)
+    for _ in range(len(population)):
+        r = random() * total_fitness
+        cumulative_fitness = 0
+
+        for individual in population:
+            try:
+                selected = individual
+                cumulative_fitness += individual.fitness
+                if cumulative_fitness >= r:
+                    selected.append(individual)
+                    break
+            except AttributeError:
+                # Handle the AttributeError when fitness is not defined
+                pass
+
+    return selected

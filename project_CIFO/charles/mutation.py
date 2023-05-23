@@ -64,7 +64,7 @@ def inversion_mutation(individual):
         Individual: Mutated Individual
     """
     mut_indexes = sample(range(0, len(individual)), 2)
-    #mut_indexes = [0,3]
+    # mut_indexes = [0,3]
     mut_indexes.sort()
     individual[mut_indexes[0]:mut_indexes[1]] = individual[mut_indexes[0]:mut_indexes[1]][::-1]
     return individual
