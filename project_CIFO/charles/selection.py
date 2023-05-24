@@ -66,23 +66,16 @@ def tournament_sel(population, size=4):
 
 
 def rank_selection(population):
-    # Ranked-Based Selection
-    # Rank the individuals based on their fitness values (i.e., cost)
-    ranked_indiv = sorted(population, key=lambda x: x.fitness_value)
+    # Rank-Based Selection
+    # Select parents based on their ranks in the population
+    num_parents= 1
+    sorted_population = sorted(population, key=attrgetter("fitness"))
+    total_rank = sum(range(1, len(population) + 1))
+    selection_probs = [rank / total_rank for rank in range(1, len(population) + 1)]
 
-    # Assign a selection probability to each individual based on its rank
-    total_rank = sum(range(1, len(population)+1))
-    selection_probs = []
-    for r in range(1, len(population)+1):
-        selection_probs.append(r/total_rank)
+    parents = choices(sorted_population, weights=selection_probs, k=1)
 
-    # Select the parents based on their selection probabilities
-    parents = []
-    for i in range(2): # so queremos 2 parents
-        selected_index = choices(range(len(population)), weights=selection_probs)[0]
-        parents.append(population[selected_index])
-
-    return parents
+    return parents[0]
 
 def roulette_wheel_selection(population):
     total_fitness = sum(individual.fitness for individual in population)
