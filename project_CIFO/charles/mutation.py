@@ -1,6 +1,5 @@
 from random import randint, sample, choice
-import  random
-
+import random
 
 
 def swap_mutation(individual):
@@ -15,6 +14,7 @@ def swap_mutation(individual):
     mut_indexes = sample(range(0, len(individual)), 2)
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
     return individual
+
 
 def creep_mutation(individual):
     """
@@ -53,7 +53,6 @@ def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
     return mutated_solution
 
 
-
 def random_resetting(individual):
     """ reserva
     Random resetting mutation for a GA individual. Randomly resets the quantity of a selected food item.
@@ -67,6 +66,7 @@ def random_resetting(individual):
     index = randint(0, len(individual) - 1)  # select a random index
     individual[index] = choice(range(8))  # reset its value to a random quantity
     return individual
+
 
 if __name__ == '__main__':
     test = [1, 2, 3, 4, 5, 6]

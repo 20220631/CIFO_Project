@@ -56,7 +56,6 @@ def multi_point_co(p1, p2, num_points=2):
     return offspring1, offspring2
 
 
-
 def uniform_co(p1, p2):
     """
     Implementation of uniform crossover.
@@ -131,8 +130,6 @@ def pmx(parent1, parent2):
             offspring2[i] = parent1[i]
 
     return offspring1, offspring2
-
-
 
 
 if __name__ == '__main__':
