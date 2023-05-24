@@ -9,9 +9,6 @@ from random import random, choice
 from operator import attrgetter
 
 
-# Comentário para ver se o Commit e Update estão a funcionar.
-# ver se está tudo
-
 def get_fitness(self):
     """A function to calculate the total cost of the diet, penalizing it if the nutrient minimums are not met.
     Returns:
