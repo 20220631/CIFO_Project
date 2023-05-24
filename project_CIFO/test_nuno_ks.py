@@ -119,7 +119,7 @@ names = ['\n'.join(combination) for combination, _ in sorted_combinations]
 values = [average_fitness for _, average_fitness in sorted_combinations]
 
 plt.bar(names, values)
-plt.xticks(rotation=0,fontsize='x-small') # Make the text size smaller
+plt.xticks(rotation=0,fontsize='xx-small') # Make the text size smaller
 plt.xlabel('Average Fitness')
 plt.ylabel('Fitness')
 plt.title('Average Fitness for each combination of mutation, selection, crossover methods')
