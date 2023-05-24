@@ -92,7 +92,6 @@ def rank_selection_final(population):
 
     return parents
 
-
 def roulette_wheel_selection(population):
     total_fitness = sum(individual.fitness for individual in population)
     for _ in range(len(population)):
