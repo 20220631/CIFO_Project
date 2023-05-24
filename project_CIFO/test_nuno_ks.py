@@ -60,7 +60,7 @@ Individual.get_neighbours = get_neighbours
 
 # List all the combinations of mutation, selection and crossover
 mutation_methods = [swap_mutation, creep_mutation]
-selection_methods = [tournament_sel, roulette_wheel_selection, fps]
+selection_methods = [tournament_sel, fps]
 crossover_methods = [single_point_co, uniform_co, multi_point_co, pmx]
 
 # Record the results of each run in a list
@@ -70,12 +70,12 @@ results = []
 for mutate in mutation_methods:
     for select in selection_methods:
         for crossover in crossover_methods:
-            for _ in range(30):  # repeat the test N times
+            for _ in range(5):  # repeat the test N times
                 # Initialize the population
                 pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
 
                 # Evolve the population
-                pop.evolve(gens=100, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
+                pop.evolve(gens=20, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
                            elitism=True)
 
                 # Get the best individual
@@ -119,8 +119,10 @@ names = ['\n'.join(combination) for combination, _ in sorted_combinations]
 values = [average_fitness for _, average_fitness in sorted_combinations]
 
 plt.bar(names, values)
-plt.xticks(rotation=0,fontsize='small') # Make the text size smaller
+plt.xticks(rotation=0,fontsize='x-small') # Make the text size smaller
 plt.xlabel('Average Fitness')
 plt.ylabel('Fitness')
 plt.title('Average Fitness for each combination of mutation, selection, crossover methods')
 plt.show()
+
+

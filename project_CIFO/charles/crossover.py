@@ -19,40 +19,42 @@ def single_point_co(p1, p2):
     return offspring1, offspring2
 
 
-def multi_point_co(p1, p2, num_points=8):
+def multi_point_co(p1, p2, num_points=2):
     """Implementation of multi-point crossover.
 
     Args:
-        p1 (Individual): First parent for crossover.
-        p2 (Individual): Second parent for crossover.
+        p1 (list): First parent for crossover.
+        p2 (list): Second parent for crossover.
         num_points (int, optional): Number of crossover points. Defaults to 2.
 
     Returns:
-        Individuals: Two offspring, resulting from the crossover.
+        tuple: Two offspring, resulting from the crossover.
     """
-    assert num_points < len(p1) - 1, "Number of crossover points must be less than the length of the parent representations."
+    # Make sure we have enough points to perform crossover
+    assert num_points < len(
+        p1), "Number of crossover points must be less than the length of the parent representations."
 
     # Generate crossover points
-    co_points = sorted(sample(range(1, len(p1) - 1), num_points))
+    co_points = sorted(sample(range(1, len(p1)), num_points))
 
     offspring1, offspring2 = [], []
-    for i in range(len(co_points)):
-        if i % 2 == 0:
-            offspring1.extend(p1[co_points[i-1]:co_points[i]])
-            offspring2.extend(p2[co_points[i-1]:co_points[i]])
+    for i in range(num_points + 1):
+        if i == 0:
+            start, end = 0, co_points[0]
+        elif i == num_points:
+            start, end = co_points[i - 1], len(p1)
         else:
-            offspring1.extend(p2[co_points[i-1]:co_points[i]])
-            offspring2.extend(p1[co_points[i-1]:co_points[i]])
+            start, end = co_points[i - 1], co_points[i]
 
-    # Add the last segment
-    if num_points % 2 == 0:
-        offspring1.extend(p1[co_points[-1]:])
-        offspring2.extend(p2[co_points[-1]:])
-    else:
-        offspring1.extend(p2[co_points[-1]:])
-        offspring2.extend(p1[co_points[-1]:])
+        if i % 2 == 0:  # if even
+            offspring1.extend(p1[start:end])
+            offspring2.extend(p2[start:end])
+        else:  # if odd
+            offspring1.extend(p2[start:end])
+            offspring2.extend(p1[start:end])
 
     return offspring1, offspring2
+
 
 
 def uniform_co(p1, p2):
@@ -80,57 +82,55 @@ def uniform_co(p1, p2):
     return offspring1, offspring2
 
 
-def pmx(p1, p2):
-    """Implementation of partially matched/mapped crossover.
+def pmx(parent1, parent2):
+    # Create empty offspring
+    offspring1 = [None] * len(parent1)
+    offspring2 = [None] * len(parent2)
 
-    Args:
-        p1 (Individual): First parent for crossover.
-        p2 (Individual): Second parent for crossover.
+    # Select random crossover points
+    point1 = randint(0, len(parent1) - 1)
+    point2 = randint(0, len(parent1) - 1)
 
-    Returns:
-        Individuals: Two offspring, resulting from the crossover.
-    """
-    xo_points = sample(range(len(p1)), 2)
-    #xo_points = [3,6]
-    xo_points.sort()
+    # Ensure point2 is greater than point1
+    if point2 < point1:
+        point1, point2 = point2, point1
 
-    def pmx(p1, p2):
-        """Implementation of partially matched/mapped crossover.
+    # Copy the selected segment from parent1 to offspring
+    offspring1[point1:point2+1] = parent1[point1:point2+1]
+    offspring2[point1:point2+1] = parent2[point1:point2+1]
 
-        Args:
-            p1 (Individual): First parent for crossover.
-            p2 (Individual): Second parent for crossover.
+    # Map the values from parent2 to the corresponding positions in offspring
+    for i in range(point1, point2+1):
+        if parent2[i] not in offspring1:
+            while offspring1[i] is None:
+                index = parent2.index(parent1[i])
+                if offspring1[index] is None:
+                    offspring1[index] = parent2[i]
+                else:
+                    offspring1[i] = parent2[i]
+        else:
+            offspring1[i] = parent2[i]
 
-        Returns:
-            Individuals: Two offspring, resulting from the crossover.
-        """
-        xo_points = sample(range(len(p1)), 2)
-        # xo_points = [3,6]
-        xo_points.sort()
+    # Map the values from parent1 to the corresponding positions in offspring
+    for i in range(point1, point2+1):
+        if parent1[i] not in offspring2:
+            while offspring2[i] is None:
+                index = parent1.index(parent2[i])
+                if offspring2[index] is None:
+                    offspring2[index] = parent1[i]
+                else:
+                    offspring2[i] = parent1[i]
+        else:
+            offspring2[i] = parent1[i]
 
-        def pmx_offspring(x, y):
-            o = [None] * len(x)
-            # offspring2
-            o[xo_points[0]:xo_points[1]] = x[xo_points[0]:xo_points[1]]
-            z = set(y[xo_points[0]:xo_points[1]]) - set(x[xo_points[0]:xo_points[1]])
+    # Fill the remaining positions in offspring with values from parent2
+    for i in range(len(offspring1)):
+        if offspring1[i] is None:
+            offspring1[i] = parent2[i]
+        if offspring2[i] is None:
+            offspring2[i] = parent1[i]
 
-            # numbers that exist in the segment
-            for i in z:
-                temp = i
-                index = y.index(x[y.index(temp)])
-                while o[index] is not None:
-                    temp = index
-                    index = y.index(x[temp])
-                o[index] = i
-
-            # numbers that doesn't exist in the segment
-            while None in o:
-                index = o.index(None)
-                o[index] = y[index]
-            return o
-
-        o1, o2 = pmx_offspring(p1, p2), pmx_offspring(p2, p1)
-        return o1, o2
+    return offspring1, offspring2
 
 
 
