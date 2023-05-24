@@ -32,7 +32,7 @@ def creep_mutation(individual):
     return individual
 
 
-def uniform_mutation(individual, mutation_rate=0.1, min_value=0, max_value=30):
+def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
     """Perform uniform mutation on the individual.
 
     Args:
