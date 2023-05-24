@@ -40,7 +40,6 @@ def fps(population):
         raise Exception("No optimization specified (min or max).")
 
 
-
 def tournament_sel(population, size=4):
     """Tournament selection implementation.
 
@@ -76,6 +75,7 @@ def rank_selection(population):
     parents = choices(sorted_population, weights=selection_probs, k=1)
 
     return parents[0]
+
 
 def roulette_wheel_selection(population):
     total_fitness = sum(individual.fitness for individual in population)
