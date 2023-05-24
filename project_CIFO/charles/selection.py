@@ -76,6 +76,22 @@ def rank_selection(population):
 
     return parents[0]
 
+def rank_selection_final(population):
+    # Rank-Based Selection
+    # Select parents based on their ranks in the population
+
+    num_parents = 1
+
+    sorted_population = sorted(population, key = lambda ind: ind.get_fitness(), reverse = True)
+
+    total_rank = sum(range(1, len(population) + 1))
+
+    selection_probs = [rank / total_rank for rank in range(1, len(population) + 1)]
+
+    parents = choices(sorted_population, weights = selection_probs, k = num_parents)[0]
+
+    return parents
+
 
 def roulette_wheel_selection(population):
     total_fitness = sum(individual.fitness for individual in population)
