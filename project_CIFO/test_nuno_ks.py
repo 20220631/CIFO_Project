@@ -59,7 +59,7 @@ Individual.get_neighbours = get_neighbours
 #pop.evolve(gens=200, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=creep_mutation, crossover=uniform_co, elitism=True)
 
 # List all the combinations of mutation, selection and crossover
-mutation_methods = [swap_mutation, creep_mutation]
+mutation_methods = [swap_mutation, creep_mutation, uniform_mutation]
 selection_methods = [tournament_sel, fps]
 crossover_methods = [single_point_co, uniform_co, multi_point_co, pmx]
 
