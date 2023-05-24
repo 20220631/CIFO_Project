@@ -1,28 +1,6 @@
-from random import randint, sample
+from random import randint, sample, choice
+import  random
 
-
-def binary_mutation(individual):
-    """Binary mutation for a GA individual. Flips the bits.
-
-    Args:
-        individual (Individual): A GA individual from charles.py
-
-    Raises:
-        Exception: When individual is not binary encoded.py
-
-    Returns:
-        Individual: Mutated Individual
-    """
-    mut_index = randint(0, len(individual) - 1)
-
-    if individual[mut_index] == 0:
-        individual[mut_index] = 1
-    elif individual[mut_index] == 1:
-        individual[mut_index] = 0
-    else:
-        raise Exception(
-            f"Trying to do binary mutation on {individual}. But it's not binary.")
-    return individual
 
 
 def swap_mutation(individual):
@@ -38,26 +16,61 @@ def swap_mutation(individual):
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
     return individual
 
-
-def inversion_mutation(individual):
-    """Inversion mutation for a GA individual. Reverts a portion of the representation.
+def creep_mutation(individual):
+    """
+    Creep mutation for a GA individual. Slightly alters the quantity of a selected food item.
 
     Args:
-        individual (Individual): A GA individual from charles.py
+        individual (Individual): A GA individual. In this case, each gene represents a quantity of a particular food item.
 
     Returns:
-        Individual: Mutated Individual
+        Individual: The mutated individual. The mutation is performed in-place.
     """
-    mut_indexes = sample(range(0, len(individual)), 2)
-    #mut_indexes = [0,3]
-    mut_indexes.sort()
-    individual[mut_indexes[0]:mut_indexes[1]] = individual[mut_indexes[0]:mut_indexes[1]][::-1]
+    index = randint(0, len(individual) - 1)  # select a random index
+    individual[index] += randint(-1, 1)  # slightly alter its value
+    individual[index] = min(max(0, individual[index]), 7)  # ensure the quantity stays within bounds
     return individual
 
 
+def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
+    """Perform uniform mutation on the individual.
+
+    Args:
+        individual (list): The individual to mutate.
+        mutation_rate (float): The probability of each gene being mutated.
+        min_value (int): The minimum possible value for a gene.
+        max_value (int): The maximum possible value for a gene.
+
+    Returns:
+        list: The mutated individual.
+    """
+    mutated_solution = individual[:]  # Create a copy of the original solution
+
+    for i in range(len(mutated_solution)):
+        if random.random() < mutation_rate:
+            mutated_solution[i] = random.randint(min_value, max_value)
+
+    return mutated_solution
+
+
+
+def random_resetting(individual):
+    """ reserva
+    Random resetting mutation for a GA individual. Randomly resets the quantity of a selected food item.
+
+    Args:
+        individual (Individual): A GA individual. In this case, each gene represents a quantity of a particular food item.
+
+    Returns:
+        Individual: The mutated individual. The mutation is performed in-place.
+    """
+    index = randint(0, len(individual) - 1)  # select a random index
+    individual[index] = choice(range(8))  # reset its value to a random quantity
+    return individual
+
 if __name__ == '__main__':
     test = [1, 2, 3, 4, 5, 6]
-    test = inversion_mutation(test)
+    test = swap_mutation(test)
     print(test)
 
 
