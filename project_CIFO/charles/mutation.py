@@ -28,7 +28,7 @@ def creep_mutation(individual):
     """
     index = randint(0, len(individual) - 1)  # select a random index
     individual[index] += randint(-1, 1)  # slightly alter its value
-    individual[index] = min(max(0, individual[index]), 7)  # ensure the quantity stays within bounds
+    individual[index] = min(max(0, individual[index]), 30)  # ensure the quantity stays within bounds
     return individual
 
 
