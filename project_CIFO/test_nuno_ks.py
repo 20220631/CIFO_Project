@@ -1,11 +1,10 @@
 from charles.charles import Population, Individual
-from charles.search import hill_climb, sim_annealing
 from copy import deepcopy
 from data.data import data_, nutrients
-from charles.selection import fps, tournament_sel, roulette_wheel_selection
+from charles.selection import fps, tournament_sel, rank_selection
 from charles.mutation import swap_mutation, creep_mutation, uniform_mutation
 from charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
-from random import random, choice
+from random import choice
 from operator import attrgetter
 
 
