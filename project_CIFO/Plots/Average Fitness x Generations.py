@@ -76,9 +76,6 @@ def evolution_process(num_runs=5):
         min_fitness_values.append(np.min(best_fitness_values))
         max_fitness_values.append(np.max(best_fitness_values))
 
-    # Calculate the average fitness values
-    average_fitness_values = np.mean(average_fitness_values, axis=0)
-
     # Plot the fitness variation
     generations = np.arange(20, 100)
     plot_fitness(generations, avg_fitness_values, min_fitness_values, max_fitness_values)
