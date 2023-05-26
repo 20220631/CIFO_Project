@@ -1,4 +1,4 @@
-from random import uniform, choice, sample, choices, random
+from random import uniform, choice, choices
 from operator import attrgetter
 
 
@@ -25,13 +25,11 @@ def fps(population):
                 return individual
 
     elif population.optim == "min":
-        # Was here before: raise NotImplementedError
-        # The new changes:
-
         # Find individual in the position of the spin
         for individual in population:
             # Reverse the selection process for minimization
-            # Subtracting individual fitness from total fitness emphasizes smaller fitness values, reducing their contribution to the position.
+            # Subtracting individual fitness from total fitness emphasizes smaller fitness values,
+            # reducing their contribution to the position.
             position += total_fitness - individual.fitness
             if position > spin:
                 return individual
@@ -60,6 +58,7 @@ def tournament_sel(population, size=4):
     # tournament = sample(population.individuals, size)
     if population.optim == "max":
         return max(tournament, key=attrgetter("fitness"))
+
     if population.optim == "min":
         return min(tournament, key=attrgetter("fitness"))
 
@@ -67,46 +66,15 @@ def tournament_sel(population, size=4):
 def rank_selection(population):
     # Rank-Based Selection
     # Select parents based on their ranks in the population
-    num_parents= 1
-    sorted_population = sorted(population, key=attrgetter("fitness"))
-    total_rank = sum(range(1, len(population) + 1))
-    selection_probs = [rank / total_rank for rank in range(1, len(population) + 1)]
-
-    parents = choices(sorted_population, weights=selection_probs, k=1)
-
-    return parents[0]
-
-def rank_selection_final(population):
-    # Rank-Based Selection
-    # Select parents based on their ranks in the population
 
     num_parents = 1
 
-    sorted_population = sorted(population, key = lambda ind: ind.get_fitness(), reverse = True)
+    sorted_population = sorted(population, key=lambda ind: ind.get_fitness(), reverse=True)
 
     total_rank = sum(range(1, len(population) + 1))
 
     selection_probs = [rank / total_rank for rank in range(1, len(population) + 1)]
 
-    parents = choices(sorted_population, weights = selection_probs, k = num_parents)[0]
+    parents = choices(sorted_population, weights=selection_probs, k=num_parents)[0]
 
     return parents
-
-def roulette_wheel_selection(population):
-    total_fitness = sum(individual.fitness for individual in population)
-    for _ in range(len(population)):
-        r = random() * total_fitness
-        cumulative_fitness = 0
-
-        for individual in population:
-            try:
-                selected = individual
-                cumulative_fitness += individual.fitness
-                if cumulative_fitness >= r:
-                    selected= individual
-                    break
-            except AttributeError:
-                # Handle the AttributeError when fitness is not defined
-                pass
-
-    return selected
