@@ -33,52 +33,58 @@ def get_fitness(self):
 Individual.get_fitness = get_fitness
 
 
-def plot_fitness(populations, best_fitness_values):
-    population_nums = np.arange(len(best_fitness_values))
-    fitness_values = np.array(best_fitness_values)
+def plot_fitness(population_nums, avg_fitness_values, min_fitness_values, max_fitness_values):
+    # Plot average fitness values
+    plt.plot(population_nums, avg_fitness_values, label='Average', color='green')
+    # Plot max fitness values
+    plt.plot(population_nums, max_fitness_values, label='Max', color='grey')
+    # Plot min fitness values
+    plt.plot(population_nums, min_fitness_values, label='Min', color='grey')
 
-    # Reshape the fitness values to match the population_nums shape
-    fitness_values = fitness_values.reshape(population_nums.shape)
+    # Fill the area between max and min with grey color
+    plt.fill_between(population_nums, min_fitness_values, max_fitness_values, color='grey', alpha=0.5)
 
-    plt.plot(population_nums, fitness_values)
-    plt.xlabel('Population')
+    plt.xlabel('Population Size')
     plt.ylabel('Fitness')
     plt.title('Fitness Variation')
+    plt.legend()
     plt.show()
 
 
-def evolution_process(initial_population, num_populations, num_runs=5):
-    populations = []
-    average_fitness_values = []
+def evolution_process(num_populations, num_runs):
+    avg_fitness_values = []
+    min_fitness_values = []
+    max_fitness_values = []
 
-    current_population = initial_population
-    
-    for population in range(num_populations):
-        best_fitness_values = []
+    for size in range(30,num_populations+1):
+        fitness_values = []
 
         for _ in range(num_runs):
             # Generate the next population
-            current_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10),
+            current_population = Population(size=size, optim="min", sol_size=len(data_), valid_set=range(30),
                                             replacement=True)
 
-            current_population.evolve(gens=population, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
+            current_population.evolve(gens=80, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
             # Get the best individual in the current population
             best_individual = min(current_population, key=attrgetter("fitness"))
             best_fitness = best_individual.fitness
 
-            # Store the best fitness value
-            best_fitness_values.append(best_fitness)
+            fitness_values.append(best_fitness)
 
-        average_fitness = np.mean(best_fitness_values)
-        average_fitness_values.append(average_fitness)
+        # Calculate average, min and max fitness values
+        avg_fitness_values.append(np.mean(fitness_values))
+        min_fitness_values.append(np.min(fitness_values))
+        max_fitness_values.append(np.max(fitness_values))
 
-    # Plot the average fitness variation
-    plot_fitness(populations, average_fitness_values)
+    population_nums = np.arange(30, num_populations + 1)
 
+    # Plot the fitness variation
+    plot_fitness2(population_nums, avg_fitness_values, min_fitness_values, max_fitness_values)
 
 # Set up the initial population and other parameters
-initial_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
 num_populations = 100
+num_runs = 5
 
-evolution_process(initial_population, num_populations, num_runs=5)
+evolution_process2(num_populations, num_runs)
+
