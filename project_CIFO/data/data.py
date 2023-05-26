@@ -1,6 +1,6 @@
 # Nutrient minimums.
 nutrients = [
-    ['Calories (kcal)', 3],
+    ['Calories (kcal)', 3000],
     ['Protein (g)', 70],
     ['Calcium (g)', 0.8],
     ['Iron (mg)', 12],
