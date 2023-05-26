@@ -41,7 +41,7 @@ import seaborn as sns
 def get_best_individual(pop):
     return min(pop, key=attrgetter("fitness"))
 
-def evolution_process(num_runs=50):
+def evolution_process(num_runs=100):
     best_individual = None
     best_fitness = float('inf')
 
