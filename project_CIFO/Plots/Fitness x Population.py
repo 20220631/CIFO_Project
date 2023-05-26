@@ -47,11 +47,14 @@ def plot_fitness(populations, best_fitness_values):
     plt.show()
 
 
-def evolution_process2(initial_population, num_populations):
+def evolution_process(initial_population, num_populations):
     populations = []
     best_fitness_values = []
 
     current_population = initial_population
+    # Generate the next population
+    current_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
+
     for population in range(num_populations):
         current_population.evolve(gens=population, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
@@ -63,15 +66,13 @@ def evolution_process2(initial_population, num_populations):
         populations.append(current_population)
         best_fitness_values.append(best_fitness)
 
-        # Generate the next population
-        current_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
 
     # Plot the fitness variation
-    plot_fitness2(populations, best_fitness_values)
+    plot_fitness(populations, best_fitness_values)
 
 
 # Set up the initial population and other parameters
 initial_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
 num_populations = 100
 
-evolution_process2(initial_population, num_populations)
+evolution_process(initial_population, num_populations)
