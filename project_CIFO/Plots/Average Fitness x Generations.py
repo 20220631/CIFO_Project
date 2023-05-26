@@ -58,9 +58,9 @@ def evolution_process(num_runs=5):
 
     for generation in range(20, 100):
         best_fitness_values = []
-
+        print(f"generation:{generation}")
         for _ in range(num_runs):
-            pop = Population(size=94, optim="min", sol_size=len(data_), valid_set=range(20), replacement=True)
+            pop = Population(size=94, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
             pop.evolve(gens=generation, xo_prob=0.9, mut_prob=0.2, select=tournament_sel,
                        mutate=swap_mutation, crossover=uniform_co, elitism=True)  # Evolve the population for 1 generation
 
