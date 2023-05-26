@@ -1,5 +1,5 @@
-from random import randint, sample, choice
-import random
+from random import random, randint, sample, choice, uniform
+
 
 
 def swap_mutation(individual):
@@ -15,7 +15,6 @@ def swap_mutation(individual):
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
     return individual
 
-
 def creep_mutation(individual):
     """
     Creep mutation for a GA individual. Slightly alters the quantity of a selected food item.
@@ -27,8 +26,8 @@ def creep_mutation(individual):
         Individual: The mutated individual. The mutation is performed in-place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
-    individual[index] += randint(-1, 1)  # slightly alter its value
-    individual[index] = min(max(0, individual[index]), 30)  # ensure the quantity stays within bounds
+    individual[index] += uniform(-1,1)  # slightly alter its value
+    individual[index] = min(max(0, individual[index]), 1)  # ensure the quantity stays within bounds
     return individual
 
 
@@ -47,14 +46,15 @@ def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
     mutated_solution = individual[:]  # Create a copy of the original solution
 
     for i in range(len(mutated_solution)):
-        if random.random() < mutation_rate:
-            mutated_solution[i] = random.randint(min_value, max_value)
+        if random() < mutation_rate:
+            mutated_solution[i] = uniform(0,1)
 
     return mutated_solution
 
 
+
 def random_resetting(individual):
-    """ reserva
+    """
     Random resetting mutation for a GA individual. Randomly resets the quantity of a selected food item.
 
     Args:
@@ -64,17 +64,13 @@ def random_resetting(individual):
         Individual: The mutated individual. The mutation is performed in-place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
-    individual[index] = choice(range(30))  # reset its value to a random quantity
+    individual[index] = uniform(0,1)  # reset its value to a random quantity
     return individual
-
 
 if __name__ == '__main__':
     test = [1, 2, 3, 4, 5, 6]
     test = swap_mutation(test)
     print(test)
-
-
-
 
 
 
