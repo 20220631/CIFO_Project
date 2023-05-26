@@ -1,11 +1,8 @@
-from charles.charles import Population, Individual
-from charles.search import hill_climb, sim_annealing
-from copy import deepcopy
-from data.data import data_, nutrients
-from charles.selection import fps, tournament_sel, roulette_wheel_selection
-from charles.mutation import swap_mutation, creep_mutation, uniform_mutation
-from charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
-from random import random, choice
+from project_CIFO.charles.charles import Population, Individual
+from project_CIFO.data.data import data_, nutrients
+from project_CIFO.charles.selection import fps, tournament_sel, rank_selection
+from project_CIFO.charles.mutation import swap_mutation, creep_mutation, uniform_mutation, random_resetting
+from project_CIFO.charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
 from operator import attrgetter
 import matplotlib.pyplot as plt
 import numpy as np
@@ -35,42 +32,8 @@ def get_fitness(self):
 # Monkey Patching
 Individual.get_fitness = get_fitness
 
-# def plot_fitness(generations, best_fitness_values):
-#     plt.plot(generations, best_fitness_values)
-#     plt.xlabel('Generation')
-#     plt.ylabel('Fitness')
-#     plt.title('Fitness Variation')
-#     plt.show()
-#
-#
-# def evolution_process(population, num_generations):
-#     generations = []
-#     best_fitness_values = []
-#
-#     for generation in range(num_generations):
-#         population.evolve(gens=generation, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)  # Evolve the population for 1 generation
-#
-#         # Get the best individual in the current generation
-#         best_individual = min(population, key=attrgetter("fitness"))
-#         best_fitness = best_individual.fitness
-#
-#         # Store the generation and best fitness value
-#         generations.append(generation)
-#         best_fitness_values.append(best_fitness)
-#
-#     # Plot the fitness variation
-#     plot_fitness(generations, best_fitness_values)
-#
 
-
-# Set up the population and other parameters
-#pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
-#evolution_process(population=pop, num_generations=100)
-
-
-
-
-def plot_fitness2(populations, best_fitness_values):
+def plot_fitness(populations, best_fitness_values):
     population_nums = np.arange(len(best_fitness_values))
     fitness_values = np.array(best_fitness_values)
 
@@ -89,8 +52,8 @@ def evolution_process2(initial_population, num_populations):
     best_fitness_values = []
 
     current_population = initial_population
-    for _ in range(num_populations):
-        current_population.evolve(gens=200, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=creep_mutation, crossover=uniform_co, elitism=True)
+    for population in range(num_populations):
+        current_population.evolve(gens=population, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
         # Get the best individual in the current population
         best_individual = min(current_population, key=attrgetter("fitness"))
@@ -112,5 +75,3 @@ initial_population = Population(size=50, optim="min", sol_size=len(data_), valid
 num_populations = 100
 
 evolution_process2(initial_population, num_populations)
-
-
