@@ -13,7 +13,7 @@ class Individual:
     ):
         if representation is None:
             if replacement is True:
-                self.representation = [choice(valid_set) for i in range(size)]
+                self.representation = [valid_set for i in range(size)]
             elif replacement is False:
                 self.representation = sample(valid_set, size)
         else:
