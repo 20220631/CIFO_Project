@@ -64,7 +64,7 @@ def random_resetting(individual):
         Individual: The mutated individual. The mutation is performed in-place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
-    individual[index] = choice(range(8))  # reset its value to a random quantity
+    individual[index] = choice(range(30))  # reset its value to a random quantity
     return individual
 
 

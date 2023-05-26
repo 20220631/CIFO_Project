@@ -47,32 +47,38 @@ def plot_fitness(populations, best_fitness_values):
     plt.show()
 
 
-def evolution_process(initial_population, num_populations):
+def evolution_process(initial_population, num_populations, num_runs=5):
     populations = []
-    best_fitness_values = []
+    average_fitness_values = []
 
     current_population = initial_population
-    # Generate the next population
-    current_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
-
+    
     for population in range(num_populations):
-        current_population.evolve(gens=population, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
+        best_fitness_values = []
 
-        # Get the best individual in the current population
-        best_individual = min(current_population, key=attrgetter("fitness"))
-        best_fitness = best_individual.fitness
+        for _ in range(num_runs):
+            # Generate the next population
+            current_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10),
+                                            replacement=True)
 
-        # Store the current population and best fitness value
-        populations.append(current_population)
-        best_fitness_values.append(best_fitness)
+            current_population.evolve(gens=population, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
+            # Get the best individual in the current population
+            best_individual = min(current_population, key=attrgetter("fitness"))
+            best_fitness = best_individual.fitness
 
-    # Plot the fitness variation
-    plot_fitness(populations, best_fitness_values)
+            # Store the best fitness value
+            best_fitness_values.append(best_fitness)
+
+        average_fitness = np.mean(best_fitness_values)
+        average_fitness_values.append(average_fitness)
+
+    # Plot the average fitness variation
+    plot_fitness(populations, average_fitness_values)
 
 
 # Set up the initial population and other parameters
 initial_population = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(10), replacement=True)
 num_populations = 100
 
-evolution_process(initial_population, num_populations)
+evolution_process(initial_population, num_populations, num_runs=5)
