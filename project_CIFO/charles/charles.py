@@ -1,4 +1,4 @@
-from random import shuffle, choice, sample, random
+from random import shuffle, choice, sample, random, uniform
 from operator import attrgetter
 from copy import deepcopy
 
@@ -13,7 +13,7 @@ class Individual:
     ):
         if representation is None:
             if replacement is True:
-                self.representation = [valid_set for i in range(size)]
+                self.representation = [choice(valid_set) for i in range(size)]
             elif replacement is False:
                 self.representation = sample(valid_set, size)
         else:

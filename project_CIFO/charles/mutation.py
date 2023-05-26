@@ -1,4 +1,5 @@
 from random import random, randint, sample, choice, uniform
+import numpy as np
 
 
 
@@ -26,7 +27,7 @@ def creep_mutation(individual):
         Individual: The mutated individual. The mutation is performed in-place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
-    individual[index] += uniform(-1,1)  # slightly alter its value
+    individual[index] += choice([-0.05,0.05])  # slightly alter its value
     individual[index] = min(max(0, individual[index]), 1)  # ensure the quantity stays within bounds
     return individual
 
@@ -47,7 +48,7 @@ def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
 
     for i in range(len(mutated_solution)):
         if random() < mutation_rate:
-            mutated_solution[i] = uniform(0,1)
+            mutated_solution[i] = choice(np.arange(0,1.1,0.01))
 
     return mutated_solution
 
@@ -64,7 +65,7 @@ def random_resetting(individual):
         Individual: The mutated individual. The mutation is performed in-place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
-    individual[index] = uniform(0,1)  # reset its value to a random quantity
+    individual[index] = choice(np.arange(0,1.1,0.01))  # reset its value to a random quantity
     return individual
 
 if __name__ == '__main__':
