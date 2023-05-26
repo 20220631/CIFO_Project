@@ -6,6 +6,7 @@ from project_CIFO.charles.crossover import single_point_co, multi_point_co, unif
 from operator import attrgetter
 import matplotlib.pyplot as plt
 from random import random, uniform
+import numpy as np
 
 
 def get_fitness(self):
@@ -46,9 +47,9 @@ results = []
 for mutate in mutation_methods:
     for select in selection_methods:
         for crossover in crossover_methods:
-            for _ in range(10):  # repeat the test N times
+            for _ in range(11):  # repeat the test N times
                 # Initialize the population
-                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=uniform(0, 1), replacement=True)
+                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=np.arange(0, 1.1, 0.01), replacement=True)
 
                 # Evolve the population
                 pop.evolve(gens=40, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
