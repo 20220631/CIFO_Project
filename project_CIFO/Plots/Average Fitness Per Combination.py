@@ -84,7 +84,7 @@ plt.figure(figsize=(10, 20))  # Increase figure size and invert axes
 # Sort combinations by average fitness
 sorted_combinations = sorted(average_results.items(), key=lambda x: x[1])
 
-# Display combination names in a readble way
+# Display combination names in a readable way
 names_values = [(str(combination), average_fitness) for combination, average_fitness in sorted_combinations]
 
 names = [name for name, _ in names_values]
