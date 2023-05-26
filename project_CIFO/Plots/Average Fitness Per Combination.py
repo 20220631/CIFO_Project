@@ -5,6 +5,7 @@ from project_CIFO.charles.mutation import swap_mutation, creep_mutation, uniform
 from project_CIFO.charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
 from operator import attrgetter
 import matplotlib.pyplot as plt
+from random import random, uniform
 
 
 def get_fitness(self):
@@ -25,7 +26,7 @@ def get_fitness(self):
     penalty = 0
     for nutrient_index in range(len(nutrients)):
         if nutrient_totals[nutrient_index] < nutrients[nutrient_index][1]:
-            penalty += 1000000
+            penalty += 2000
 
     return fitness + penalty
 
@@ -45,9 +46,9 @@ results = []
 for mutate in mutation_methods:
     for select in selection_methods:
         for crossover in crossover_methods:
-            for _ in range(5):  # repeat the test N times
+            for _ in range(10):  # repeat the test N times
                 # Initialize the population
-                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
+                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=uniform(0, 1), replacement=True)
 
                 # Evolve the population
                 pop.evolve(gens=40, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
@@ -96,6 +97,7 @@ plt.xlabel('Average Fitness')  # Invert x and y axes labels
 plt.ylabel('Combination of Mutations')
 plt.title('Average Fitness for each combination of mutation, selection and crossover methods')
 plt.show()
+
 
 
 
