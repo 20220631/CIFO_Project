@@ -27,7 +27,7 @@ def get_fitness(self):
     penalty = 0
     for nutrient_index in range(len(nutrients)):
         if nutrient_totals[nutrient_index] < nutrients[nutrient_index][1]:
-            penalty += 1000000
+            penalty += 2000
 
     return fitness + penalty
 
@@ -47,9 +47,9 @@ results = []
 for mutate in mutation_methods:
     for select in selection_methods:
         for crossover in crossover_methods:
-            for _ in range(5):  # repeat the test N times
+            for _ in range(11):  # repeat the test N times
                 # Initialize the population
-                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
+                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=np.arange(0, 1.1, 0.01), replacement=True)
 
                 # Evolve the population
                 pop.evolve(gens=40, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
