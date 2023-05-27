@@ -48,7 +48,7 @@ for mutate in mutation_methods:
             for _ in range(11):  # repeat the test N times
                 # Initialize the population
                 pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=np.arange(0, 1.1, 0.01), replacement=True)
-
+                #ola
                 # Evolve the population
                 pop.evolve(gens=40, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
                            elitism=True)
