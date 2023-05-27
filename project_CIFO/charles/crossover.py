@@ -1,4 +1,4 @@
-from random import randint, sample, uniform, randint
+from random import sample, randint
 
 
 def single_point_co(p1, p2):
