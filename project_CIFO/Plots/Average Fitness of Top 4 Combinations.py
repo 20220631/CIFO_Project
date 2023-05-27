@@ -1,8 +1,8 @@
 from project_CIFO.charles.charles import Population, Individual
 from project_CIFO.data.data import data_, nutrients
-from project_CIFO.charles.selection import fps, tournament_sel, rank_selection
-from project_CIFO.charles.mutation import swap_mutation, creep_mutation, uniform_mutation, random_resetting
-from project_CIFO.charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
+from project_CIFO.charles.selection import tournament_sel
+from project_CIFO.charles.mutation import swap_mutation, random_resetting
+from project_CIFO.charles.crossover import uniform_co, pmx
 from operator import attrgetter
 import matplotlib.pyplot as plt
 import numpy as np
@@ -36,8 +36,8 @@ Individual.get_fitness = get_fitness
 
 # List all the combinations of mutation, selection and crossover
 mutation_methods = [swap_mutation, random_resetting]
-selection_methods = [tournament_sel, rank_selection]
-crossover_methods = [uniform_co, pmx]
+selection_methods = [tournament_sel]
+crossover_methods = [pmx, uniform_co]
 
 # Record the results of each run in a list
 results = []
@@ -46,12 +46,12 @@ results = []
 for mutate in mutation_methods:
     for select in selection_methods:
         for crossover in crossover_methods:
-            for _ in range(1):  # repeat the test N times
+            for _ in range(31):  # repeat each combination 30 times
                 # Initialize the population
-                pop = Population(size=70, optim="min", sol_size=len(data_), valid_set=range(20), replacement=True)
+                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=np.arange(0, 1, 0.01), replacement=True)
 
                 # Evolve the population
-                pop.evolve(gens=70, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
+                pop.evolve(gens=40, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
                            elitism=True)
 
                 # Get the best individual
@@ -98,7 +98,7 @@ ax.set_xticklabels(ordered_names, fontsize='xx-small')
 ax.set_ylabel('Fitness')
 
 # Set title
-ax.set_title('Fitness Variation for top 8 combinations of mutation, selection, and crossover methods')
+ax.set_title('Fitness Variation for Top 4 combinations of mutation, selection, and crossover methods')
 
 # Show the box plot
 plt.show()
