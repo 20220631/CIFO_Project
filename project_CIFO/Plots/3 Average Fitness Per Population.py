@@ -1,11 +1,12 @@
 from project_CIFO.charles.charles import Population, Individual
 from project_CIFO.data.data import data_, nutrients
-from project_CIFO.charles.selection import fps, tournament_sel, rank_selection
-from project_CIFO.charles.mutation import swap_mutation, creep_mutation, uniform_mutation, random_resetting
-from project_CIFO.charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
+from project_CIFO.charles.selection import tournament_sel
+from project_CIFO.charles.mutation import swap_mutation
+from project_CIFO.charles.crossover import uniform_co
 from operator import attrgetter
 import matplotlib.pyplot as plt
 import numpy as np
+
 
 def get_fitness(self):
     """A function to calculate the total cost of the diet, penalizing it if the nutrient minimums are not met.
@@ -29,6 +30,7 @@ def get_fitness(self):
 
     return fitness + penalty
 
+
 # Monkey Patching
 Individual.get_fitness = get_fitness
 
@@ -51,23 +53,22 @@ def plot_fitness(population_nums, avg_fitness_values, min_fitness_values, max_fi
     plt.show()
 
 
-def evolution_process(num_populations, num_runs):
+def evolution_process(num_runs=5):
     avg_fitness_values = []
     min_fitness_values = []
     max_fitness_values = []
 
-    for size in range(30,num_populations+1):
+    for size in range(30, 101):
         fitness_values = []
 
-        for _ in range(num_runs):
-            # Generate the next population
-            current_population = Population(size=size, optim="min", sol_size=len(data_), valid_set=np.arange(0,1.1,0.01),
-                                            replacement=True)
+        for _ in range(num_runs):  # repeat each population value 5 times
+            # Generate a new population with a different number of Individuals
+            pop = Population(size=size, optim="min", sol_size=len(data_), valid_set=np.arange(0,1.1,0.01), replacement=True)
 
-            current_population.evolve(gens=120, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
+            pop.evolve(gens=120, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
             # Get the best individual in the current population
-            best_individual = min(current_population, key=attrgetter("fitness"))
+            best_individual = min(pop, key=attrgetter("fitness"))
             best_fitness = best_individual.fitness
 
             fitness_values.append(best_fitness)
@@ -77,14 +78,12 @@ def evolution_process(num_populations, num_runs):
         min_fitness_values.append(np.min(fitness_values))
         max_fitness_values.append(np.max(fitness_values))
 
-    population_nums = np.arange(30, num_populations + 1)
+    population_nums = range(30, 101)
 
     # Plot the fitness variation
     plot_fitness(population_nums, avg_fitness_values, min_fitness_values, max_fitness_values)
 
-# Set up the initial population and other parameters
-num_populations = 100
-num_runs = 5
 
-evolution_process(num_populations, num_runs)
+# Run evolution_process function to extract results
+evolution_process(num_runs=5)
 

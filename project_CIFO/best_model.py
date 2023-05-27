@@ -4,10 +4,8 @@ from charles.selection import tournament_sel
 from charles.mutation import swap_mutation
 from charles.crossover import uniform_co
 from operator import attrgetter
-import matplotlib.pyplot as plt
 import numpy as np
-import collections
-import seaborn as sns
+
 
 def get_fitness(self):
     """A function to calculate the total cost of the diet, penalizing it if the nutrient minimums are not met.
@@ -35,20 +33,19 @@ def get_fitness(self):
 # Monkey Patching
 Individual.get_fitness = get_fitness
 
-import collections
-import seaborn as sns
 
 def get_best_individual(pop):
     return min(pop, key=attrgetter("fitness"))
 
-def evolution_process(num_runs=2000):
+
+def evolution_process(num_runs=500):
     best_individual = None
     best_fitness = float('inf')
 
     for _ in range(num_runs):
 
-        pop = Population(size=200, optim="min", sol_size=len(data_), valid_set=np.arange(0,1.1,0.01), replacement=True)
-        pop.evolve(gens=200, xo_prob=0.9, mut_prob=0.2, select=tournament_sel,
+        pop = Population(size=91, optim="min", sol_size=len(data_), valid_set=np.arange(0, 1.01, 0.01), replacement=True)
+        pop.evolve(gens=113, xo_prob=0.9, mut_prob=0.2, select=tournament_sel,
                    mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
         # Get the best individual in the current generation
@@ -59,6 +56,7 @@ def evolution_process(num_runs=2000):
             best_fitness = current_best_individual.fitness
 
     return best_individual, best_fitness
+
 
 # Set up the population and other parameters
 best_individual, best_fitness = evolution_process()

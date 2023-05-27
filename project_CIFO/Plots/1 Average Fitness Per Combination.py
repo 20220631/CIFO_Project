@@ -1,11 +1,11 @@
-from charles.charles import Population, Individual
-from copy import deepcopy
-from data.data import data_, nutrients
-from charles.selection import fps, tournament_sel, rank_selection
-from charles.mutation import swap_mutation, creep_mutation, uniform_mutation
-from charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
-from random import choice
+from project_CIFO.charles.charles import Population, Individual
+from project_CIFO.data.data import data_, nutrients
+from project_CIFO.charles.selection import fps, tournament_sel, rank_selection
+from project_CIFO.charles.mutation import swap_mutation, creep_mutation, uniform_mutation, random_resetting
+from project_CIFO.charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
 from operator import attrgetter
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def get_fitness(self):
@@ -26,41 +26,18 @@ def get_fitness(self):
     penalty = 0
     for nutrient_index in range(len(nutrients)):
         if nutrient_totals[nutrient_index] < nutrients[nutrient_index][1]:
-            penalty += 1000000
+            penalty += 2000
 
     return fitness + penalty
 
 
-def get_neighbours(self):
-    """A neighbourhood function for the Stigler Diet Problem, for each neighbour, randomly adds or subtracts a bit
-    Returns:
-        list: a list of individuals
-    """
-    n = [deepcopy(self.representation) for i in range(len(self.representation))]
-
-    for index, neighbour in enumerate(n):
-        neighbour[index] += choice([-1, 1])
-
-        neighbour[index] = max(0, neighbour[index])  # Lower bound
-        neighbour[index] = min(29, neighbour[index])  # Upper bound
-
-    n = [Individual(i) for i in n]
-    return n
-
-
-
-
 # Monkey Patching
 Individual.get_fitness = get_fitness
-Individual.get_neighbours = get_neighbours
-
-#pop = Population(size=100, optim="min", sol_size=len(data_), valid_set=range(20), replacement=True)
-#pop.evolve(gens=200, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=creep_mutation, crossover=uniform_co, elitism=True)
 
 # List all the combinations of mutation, selection and crossover
-mutation_methods = [swap_mutation, creep_mutation, uniform_mutation]
-selection_methods = [tournament_sel, fps]
-crossover_methods = [single_point_co, uniform_co, multi_point_co, pmx]
+mutation_methods = [swap_mutation, creep_mutation, uniform_mutation, random_resetting]
+selection_methods = [fps, tournament_sel, rank_selection]
+crossover_methods = [single_point_co, multi_point_co, uniform_co, pmx]
 
 # Record the results of each run in a list
 results = []
@@ -69,12 +46,12 @@ results = []
 for mutate in mutation_methods:
     for select in selection_methods:
         for crossover in crossover_methods:
-            for _ in range(5):  # repeat the test N times
+            for _ in range(11):  # repeat each combination 10 times
                 # Initialize the population
-                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
+                pop = Population(size=50, optim="min", sol_size=len(data_), valid_set=np.arange(0, 1.01, 0.01), replacement=True)
 
                 # Evolve the population
-                pop.evolve(gens=20, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
+                pop.evolve(gens=40, xo_prob=0.9, mut_prob=0.2, select=select, mutate=mutate, crossover=crossover,
                            elitism=True)
 
                 # Get the best individual
@@ -87,13 +64,7 @@ for mutate in mutation_methods:
                 results.append((mutate.__name__, select.__name__, crossover.__name__, best_individual.get_fitness()))
 
 # At the end of this loop, `results` should be a list where each item is a tuple containing:
-# (mutation method name, selection method name, crossover method name, best fitness achieved)
-
-
-import matplotlib.pyplot as plt
-
-# Assuming the results are as above, with each item being a tuple of:
-# (mutation method name, selection method name, crossover method name, best fitness achieved)
+# (mutation method name, selection method name, crossover method name and the best fitness achieved)
 
 # To compute the average fitness for each combination:
 average_results = {}
@@ -109,19 +80,25 @@ for combination in average_results:
     average_results[combination] = sum(average_results[combination]) / len(average_results[combination])
 
 # To plot the results:
-plt.figure(figsize=(20,10)) # Increase figure size
+plt.figure(figsize=(10, 20))  # Increase figure size and invert axes
 
-# sort combinations by average fitness
+# Sort combinations by average fitness
 sorted_combinations = sorted(average_results.items(), key=lambda x: x[1])
 
-names = ['\n'.join(combination) for combination, _ in sorted_combinations]
-values = [average_fitness for _, average_fitness in sorted_combinations]
+# Display combination names in a readable way
+names_values = [(str(combination), average_fitness) for combination, average_fitness in sorted_combinations]
 
-plt.bar(names, values)
-plt.xticks(rotation=0,fontsize='xx-small') # Make the text size smaller
-plt.xlabel('Average Fitness')
-plt.ylabel('Fitness')
-plt.title('Average Fitness for each combination of mutation, selection, crossover methods')
+names = [name for name, _ in names_values]
+values = [value for _, value in names_values]
+
+plt.barh(names, values)  # Use barh for horizontal bars
+plt.yticks(rotation=0, fontsize='xx-small')  # Make the y-axis text size smaller
+plt.xlabel('Average Fitness')  # Invert x and y axes labels
+plt.ylabel('Combination of Mutations')
+plt.title('Average Fitness for each combination of mutation, selection and crossover methods')
 plt.show()
+
+
+
 
 

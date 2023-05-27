@@ -2,7 +2,10 @@ from random import sample, randint
 
 
 def single_point_co(p1, p2):
-    """Implementation of single point crossover.
+    """
+    Single-point crossover creates offspring by choosing a random crossover point in the parent chromosomes,
+    then swapping all genes after that point between the two parents.
+    This results in each offspring sharing some initial genes with one parent and the rest with the other parent.
 
     Args:
         p1 (Individual): First parent for crossover.
@@ -20,19 +23,21 @@ def single_point_co(p1, p2):
 
 
 def multi_point_co(p1, p2, num_points=2):
-    """Implementation of multi-point crossover.
+    """
+    Multipoint crossover creates offspring by choosing multiple random crossover points in the parent chromosomes,
+    then swapping all genes between those points. The swapping occurs alternatively between the parents,
+    resulting in a mix of genes from both parents.
 
     Args:
-        p1 (list): First parent for crossover.
-        p2 (list): Second parent for crossover.
+        p1 (Individual): First parent for crossover.
+        p2 (Individual): Second parent for crossover.
         num_points (int, optional): Number of crossover points. Defaults to 2.
 
     Returns:
-        tuple: Two offspring, resulting from the crossover.
+        Two offspring, resulting from the crossover.
     """
     # Make sure we have enough points to perform crossover
-    assert num_points < len(
-        p1), "Number of crossover points must be less than the length of the parent representations."
+    assert num_points < len(p1), "Number of crossover points must be less than the length of the parent representations"
 
     # Generate crossover points
     co_points = sorted(sample(range(1, len(p1)), num_points))
@@ -58,7 +63,9 @@ def multi_point_co(p1, p2, num_points=2):
 
 def uniform_co(p1, p2):
     """
-    Implementation of uniform crossover.
+    Uniform crossover creates offspring by visiting each gene in the parent chromosomes and,
+    with a 50% chance, swapping that gene between the two parents.
+    In this way, each offspring is a mix of both parents' genes.
 
     Args:
         p1 (Individual): First parent for crossover.
@@ -81,61 +88,67 @@ def uniform_co(p1, p2):
     return offspring1, offspring2
 
 
-def pmx(parent1, parent2):
+def pmx(p1, p2):
+    """
+    PMX (Partially Mapped Crossover) operates in the following way:
+        1. Two crossover points are selected on parent chromosomes
+        2. The segment between these points is directly copied from parents to offspring
+        3. From the remaining chromosome, each value maps to the position of that value in the other parent.
+        4. Complete the chromosome by preserving the position of each value in the selected segment from the parent.
+
+    Args:
+        p1 (Individual): First parent for crossover.
+        p2 (Individual): Second parent for crossover.
+
+    Returns:
+        Two offspring, resulting from the crossover. Each offspring is a permutation of the parent genes.
+    """
+
     # Create empty offspring
-    offspring1 = [None] * len(parent1)
-    offspring2 = [None] * len(parent2)
+    offspring1 = [None] * len(p1)
+    offspring2 = [None] * len(p2)
 
     # Select random crossover points
-    point1 = randint(0, len(parent1) - 1)
-    point2 = randint(0, len(parent1) - 1)
+    point1 = randint(0, len(p1) - 1)
+    point2 = randint(0, len(p1) - 1)
 
     # Ensure point2 is greater than point1
     if point2 < point1:
         point1, point2 = point2, point1
 
     # Copy the selected segment from parent1 to offspring
-    offspring1[point1:point2+1] = parent1[point1:point2+1]
-    offspring2[point1:point2+1] = parent2[point1:point2+1]
+    offspring1[point1:point2+1] = p1[point1:point2+1]
+    offspring2[point1:point2+1] = p2[point1:point2+1]
 
     # Map the values from parent2 to the corresponding positions in offspring
     for i in range(point1, point2+1):
-        if parent2[i] not in offspring1:
+        if p2[i] not in offspring1:
             while offspring1[i] is None:
-                index = parent2.index(parent1[i])
+                index = p2.index(p1[i])
                 if offspring1[index] is None:
-                    offspring1[index] = parent2[i]
+                    offspring1[index] = p2[i]
                 else:
-                    offspring1[i] = parent2[i]
+                    offspring1[i] = p2[i]
         else:
-            offspring1[i] = parent2[i]
+            offspring1[i] = p2[i]
 
     # Map the values from parent1 to the corresponding positions in offspring
     for i in range(point1, point2+1):
-        if parent1[i] not in offspring2:
+        if p1[i] not in offspring2:
             while offspring2[i] is None:
-                index = parent1.index(parent2[i])
+                index = p1.index(p2[i])
                 if offspring2[index] is None:
-                    offspring2[index] = parent1[i]
+                    offspring2[index] = p1[i]
                 else:
-                    offspring2[i] = parent1[i]
+                    offspring2[i] = p1[i]
         else:
-            offspring2[i] = parent1[i]
+            offspring2[i] = p1[i]
 
     # Fill the remaining positions in offspring with values from parent2
     for i in range(len(offspring1)):
         if offspring1[i] is None:
-            offspring1[i] = parent2[i]
+            offspring1[i] = p2[i]
         if offspring2[i] is None:
-            offspring2[i] = parent1[i]
+            offspring2[i] = p1[i]
 
     return offspring1, offspring2
-
-
-
-
-if __name__ == '__main__':
-    #p1, p2 = [9, 8, 4, 5, 6, 7, 1, 3, 2, 10], [8, 7, 1, 2, 3, 10, 9, 5, 4, 6]
-    p1, p2 = [0.1,0.15,0.3],[0.3,0.1,0.2]
-    o1, o2 = pmx(p1, p2)
-    print(o1, o2)

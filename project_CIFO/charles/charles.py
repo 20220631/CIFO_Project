@@ -1,4 +1,4 @@
-from random import shuffle, choice, sample, random, uniform
+from random import choice, sample, random
 from operator import attrgetter
 from copy import deepcopy
 
