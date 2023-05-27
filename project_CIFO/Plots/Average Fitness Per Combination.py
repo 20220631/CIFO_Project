@@ -5,8 +5,6 @@ from project_CIFO.charles.mutation import swap_mutation, creep_mutation, uniform
 from project_CIFO.charles.crossover import single_point_co, multi_point_co, uniform_co, pmx
 from operator import attrgetter
 import matplotlib.pyplot as plt
-from random import random, uniform
-import numpy as np
 
 
 def get_fitness(self):
