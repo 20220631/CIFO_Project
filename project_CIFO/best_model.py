@@ -41,13 +41,14 @@ import seaborn as sns
 def get_best_individual(pop):
     return min(pop, key=attrgetter("fitness"))
 
-def evolution_process(num_runs=100):
+def evolution_process(num_runs=2000):
     best_individual = None
     best_fitness = float('inf')
 
     for _ in range(num_runs):
-        pop = Population(size=94, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
-        pop.evolve(gens=91, xo_prob=0.9, mut_prob=0.2, select=tournament_sel,
+
+        pop = Population(size=200, optim="min", sol_size=len(data_), valid_set=np.arange(0,1.1,0.01), replacement=True)
+        pop.evolve(gens=200, xo_prob=0.9, mut_prob=0.2, select=tournament_sel,
                    mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
         # Get the best individual in the current generation
@@ -68,10 +69,8 @@ print(f"Best fitness across all runs: {best_fitness}")
 num_products_used = sum(1 for bit in best_individual.representation if bit != 0)
 print(f"Number of products used in the best fitness: {num_products_used}")
 
-# Count the number of individual products used in the best individual
-num_individual_products_used = sum(1 for bit in best_individual.representation if bit > 0)
-print(f"Number of individual products used in the best fitness: {num_individual_products_used}")
 
 for i, quantity in enumerate(best_individual.representation):
-    print("Product: ", data_[i][0], ", Quantity: ", quantity)
+    print(f"Product: {data_[i][0]}, Unit: {data_[i][1]}, 1939 price (cents): {data_[i][2]}, Quantity: {quantity}")
+
 

@@ -56,11 +56,11 @@ def evolution_process(num_runs=5):
     min_fitness_values = []
     max_fitness_values = []
 
-    for generation in range(20, 100):
+    for generation in range(40, 121):
         best_fitness_values = []
         print(f"generation:{generation}")
         for _ in range(num_runs):
-            pop = Population(size=94, optim="min", sol_size=len(data_), valid_set=range(30), replacement=True)
+            pop = Population(size=91, optim="min", sol_size=len(data_), valid_set=np.arange(0,1.1,0.01), replacement=True)
             pop.evolve(gens=generation, xo_prob=0.9, mut_prob=0.2, select=tournament_sel,
                        mutate=swap_mutation, crossover=uniform_co, elitism=True)  # Evolve the population for 1 generation
 
@@ -77,7 +77,7 @@ def evolution_process(num_runs=5):
         max_fitness_values.append(np.max(best_fitness_values))
 
     # Plot the fitness variation
-    generations = np.arange(20, 100)
+    generations = np.arange(40, 121)
     plot_fitness(generations, avg_fitness_values, min_fitness_values, max_fitness_values)
 
 

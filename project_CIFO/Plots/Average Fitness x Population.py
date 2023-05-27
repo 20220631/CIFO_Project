@@ -61,10 +61,10 @@ def evolution_process(num_populations, num_runs):
 
         for _ in range(num_runs):
             # Generate the next population
-            current_population = Population(size=size, optim="min", sol_size=len(data_), valid_set=range(30),
+            current_population = Population(size=size, optim="min", sol_size=len(data_), valid_set=np.arange(0,1.1,0.01),
                                             replacement=True)
 
-            current_population.evolve(gens=80, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
+            current_population.evolve(gens=120, xo_prob=0.9, mut_prob=0.2, select=tournament_sel, mutate=swap_mutation, crossover=uniform_co, elitism=True)
 
             # Get the best individual in the current population
             best_individual = min(current_population, key=attrgetter("fitness"))
@@ -80,11 +80,11 @@ def evolution_process(num_populations, num_runs):
     population_nums = np.arange(30, num_populations + 1)
 
     # Plot the fitness variation
-    plot_fitness2(population_nums, avg_fitness_values, min_fitness_values, max_fitness_values)
+    plot_fitness(population_nums, avg_fitness_values, min_fitness_values, max_fitness_values)
 
 # Set up the initial population and other parameters
 num_populations = 100
 num_runs = 5
 
-evolution_process2(num_populations, num_runs)
+evolution_process(num_populations, num_runs)
 
