@@ -4,13 +4,13 @@ import numpy as np
 
 
 def swap_mutation(individual):
-    """Swap mutation for a GA individual. Swaps the bits.
+    """Swap mutation for an individual. Swaps the position of two randomly chosen genes.
 
     Args:
-        individual (Individual): A GA individual from charles.py
+        individual (Individual): An individual object.
 
     Returns:
-        Individual: Mutated Individual
+        Individual: Mutated individual in place.
     """
     mut_indexes = sample(range(0, len(individual)), 2)
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
@@ -18,13 +18,13 @@ def swap_mutation(individual):
 
 def creep_mutation(individual):
     """
-    Creep mutation for a GA individual. Slightly alters the quantity of a selected food item.
+    Creep mutation for an individual. Slightly alters the value of a randomly chosen gene.
 
     Args:
-        individual (Individual): A GA individual. In this case, each gene represents a quantity of a particular food item.
+        individual (Individual): An individual object where each gene represents a certain quantity.
 
     Returns:
-        Individual: The mutated individual. The mutation is performed in-place.
+        Individual: Mutated individual in place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
     individual[index] += choice([-0.05,0.05])  # slightly alter its value
@@ -32,14 +32,12 @@ def creep_mutation(individual):
     return individual
 
 
-def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
+def uniform_mutation(individual, mutation_rate=0.5):
     """Perform uniform mutation on the individual.
 
     Args:
         individual (list): The individual to mutate.
         mutation_rate (float): The probability of each gene being mutated.
-        min_value (int): The minimum possible value for a gene.
-        max_value (int): The maximum possible value for a gene.
 
     Returns:
         list: The mutated individual.
@@ -56,13 +54,13 @@ def uniform_mutation(individual, mutation_rate=0.5, min_value=0, max_value=30):
 
 def random_resetting(individual):
     """
-    Random resetting mutation for a GA individual. Randomly resets the quantity of a selected food item.
+    Random resetting mutation for an individual. Randomly assigns a new value to a selected gene.
 
     Args:
-        individual (Individual): A GA individual. In this case, each gene represents a quantity of a particular food item.
+        individual (Individual): An individual object where each gene represents a certain quantity.
 
     Returns:
-        Individual: The mutated individual. The mutation is performed in-place.
+        Individual: Mutated individual in place.
     """
     index = randint(0, len(individual) - 1)  # select a random index
     individual[index] = choice(np.arange(0,1.1,0.01))  # reset its value to a random quantity
